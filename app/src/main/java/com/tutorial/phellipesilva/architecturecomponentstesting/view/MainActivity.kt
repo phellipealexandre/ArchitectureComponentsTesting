@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        userViewModel = ViewModelProviders.of(this, UserViewModelFactory(this)).get(UserViewModel::class.java)
+        userViewModel = ViewModelProviders.of(this, UserViewModelFactory(this))
+            .get(UserViewModel::class.java)
 
         initClickListeners()
         startObservingUser()

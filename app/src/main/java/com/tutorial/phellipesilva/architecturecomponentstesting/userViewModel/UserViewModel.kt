@@ -21,11 +21,13 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun replaceAndShowUserFromFetchedFromService(userId: String) {
-        repository.fetchAndStoreUser(Integer.parseInt(userId), object : RepositoryOperationCallback {
-            override fun onFinished() {
-                showStoredUserById(userId)
-            }
-        })
+        repository.fetchAndStoreUser(
+            Integer.parseInt(userId),
+            object : RepositoryOperationCallback {
+                override fun onFinished() {
+                    showStoredUserById(userId)
+                }
+            })
     }
 
     fun showStoredUserById(userId: String) {

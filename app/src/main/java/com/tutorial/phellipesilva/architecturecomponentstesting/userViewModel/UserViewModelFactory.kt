@@ -11,16 +11,16 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import java.util.concurrent.Executors
 
-
 class UserViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            val repository = Repository(getRemoteService(), buildDatabase().userDao(), Executors.newSingleThreadExecutor())
-            return UserViewModel(repository) as T
-        }
+        val repository = Repository(
+            getRemoteService(),
+            buildDatabase().userDao(),
+            Executors.newSingleThreadExecutor()
+        )
 
-        throw IllegalArgumentException()
+        return UserViewModel(repository) as T
     }
 
     private fun getRemoteService(): RemoteService {
