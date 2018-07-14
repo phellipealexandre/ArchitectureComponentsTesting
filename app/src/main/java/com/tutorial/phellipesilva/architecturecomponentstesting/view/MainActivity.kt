@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         btnClearUsers.setOnClickListener {
             userViewModel.removeAllUsers()
+            clearScreen()
         }
     }
 
@@ -53,5 +54,9 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.GONE
             it?.let { activityMainBinding.user = it }
         })
+    }
+
+    private fun clearScreen() {
+        activityMainBinding.user = null
     }
 }
