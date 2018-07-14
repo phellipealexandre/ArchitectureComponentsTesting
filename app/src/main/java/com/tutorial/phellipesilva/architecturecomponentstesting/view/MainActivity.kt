@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun startObservingUser() {
         userViewModel.getUser().observe(this, Observer {
             progressBar.visibility = View.GONE
-            activityMainBinding.user = it
+            it?.let { activityMainBinding.user = it }
         })
     }
 }

@@ -17,15 +17,13 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun getUser(): LiveData<User> {
-        return this.userLiveData
+        return userLiveData
     }
 
     fun replaceAndShowUserFromFetchedFromService(userId: String) {
         repository.fetchAndStoreUser(Integer.parseInt(userId), object : RepositoryOperationCallback {
             override fun onFinished() {
-                userLiveData.removeSource(currentUser)
-                currentUser = repository.getUser(Integer.parseInt(userId))
-                userLiveData.addSource(currentUser) { userLiveData.value = it }
+                showStoredUserById(userId)
             }
         })
     }
