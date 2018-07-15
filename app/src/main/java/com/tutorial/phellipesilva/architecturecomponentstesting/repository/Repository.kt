@@ -1,6 +1,7 @@
 package com.tutorial.phellipesilva.architecturecomponentstesting.repository
 
 import android.arch.lifecycle.LiveData
+import android.util.Log
 import com.tutorial.phellipesilva.architecturecomponentstesting.database.User
 import com.tutorial.phellipesilva.architecturecomponentstesting.database.UserDao
 import com.tutorial.phellipesilva.architecturecomponentstesting.remote.RemoteService
@@ -31,7 +32,9 @@ class Repository(
 
     private fun refreshUser(userId: Int, callback: RepositoryOperationCallback) {
         remoteService.getUserById(userId).enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>?, t: Throwable?) {}
+            override fun onFailure(call: Call<User>?, t: Throwable?) {
+                Log.e("ArchComponents", t?.message)
+            }
 
             override fun onResponse(call: Call<User>?, response: Response<User>?) {
                 response?.body()?.apply {

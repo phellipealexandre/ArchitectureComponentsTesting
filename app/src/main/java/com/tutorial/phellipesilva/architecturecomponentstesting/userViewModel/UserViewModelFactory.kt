@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.tutorial.phellipesilva.architecturecomponentstesting.BuildConfig
 import java.util.concurrent.Executors
 
 class UserViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
@@ -25,7 +26,7 @@ class UserViewModelFactory(private val context: Context) : ViewModelProvider.Fac
 
     private fun getRemoteService(): RemoteService {
         return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RemoteService::class.java)
