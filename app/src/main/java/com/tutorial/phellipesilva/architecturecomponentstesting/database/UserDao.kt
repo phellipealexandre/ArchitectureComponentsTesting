@@ -16,9 +16,6 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id = :userId")
     fun load(userId: Int): LiveData<User>
 
-    @Update
-    fun update(user: User)
-
     @Query("DELETE FROM user")
     fun clearAllUsers()
 }

@@ -21,7 +21,7 @@ class Repository(private val remoteService: RemoteService, private val userDao: 
     }
 
     fun updateUser(user: User) {
-        executor.execute { userDao.update(user) }
+        executor.execute { userDao.save(user) }
     }
 
     fun clearAllUsers() {
