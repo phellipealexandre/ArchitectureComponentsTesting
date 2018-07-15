@@ -2,6 +2,7 @@ package com.tutorial.phellipesilva.architecturecomponentstesting.repository
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
+import com.nhaarman.mockitokotlin2.whenever
 import com.tutorial.phellipesilva.architecturecomponentstesting.database.User
 import com.tutorial.phellipesilva.architecturecomponentstesting.database.UserDao
 import com.tutorial.phellipesilva.architecturecomponentstesting.remote.RemoteService
@@ -12,7 +13,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
@@ -46,7 +46,7 @@ class RepositoryTest {
     @Test
     fun shouldLoadUserFromDaoWhenRequestedFromRepository() {
         val expectedLiveData = MutableLiveData<User>()
-        `when`(userDao.load(1)).thenReturn(expectedLiveData)
+        whenever(userDao.load(1)).thenReturn(expectedLiveData)
 
         val userLiveData = repository.getUser(1)
 
@@ -56,7 +56,7 @@ class RepositoryTest {
     @Test
     fun shouldSaveUserInDaoWhenRemoteRequestIsSuccessful() {
         val expectedUser = User(1, "name", "username", "test@domain.com", "99999", "website")
-        `when`(remoteService.getUserById(1)).thenReturn(object : Call<User> {
+        whenever(remoteService.getUserById(1)).thenReturn(object : Call<User> {
 
             override fun enqueue(callback: Callback<User>?) {
                 callback?.onResponse(null, Response.success(expectedUser))

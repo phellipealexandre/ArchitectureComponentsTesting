@@ -7,12 +7,14 @@ import com.tutorial.phellipesilva.architecturecomponentstesting.repository.Repos
 
 class UserViewModel(private val repository: Repository) : ViewModel() {
 
+    private val defaultUserId = 1
     private val userLiveData: LiveData<User>
     private var currentUserId = MutableLiveData<String>()
 
     init {
         userLiveData = Transformations.switchMap(currentUserId) { userId ->
-            repository.getUser(Integer.parseInt(userId))
+            val id = parseStringIdToIntegerCheckingEmptyState(userId)
+            repository.getUser(id)
         }
     }
 
@@ -21,8 +23,8 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun replaceAndShowUserFromFetchedFromService(userId: String) {
-        repository.fetchAndStoreUser(
-            Integer.parseInt(userId),
+        val id = parseStringIdToIntegerCheckingEmptyState(userId)
+        repository.fetchAndStoreUser(id,
             object : RepositoryOperationCallback {
                 override fun onFinished() {
                     showStoredUserById(userId)
@@ -43,5 +45,9 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
 
     fun removeAllUsers() {
         repository.clearAllUsers()
+    }
+
+    private fun parseStringIdToIntegerCheckingEmptyState(userId: String): Int {
+        return if (!userId.isEmpty()) Integer.parseInt(userId) else defaultUserId
     }
 }
