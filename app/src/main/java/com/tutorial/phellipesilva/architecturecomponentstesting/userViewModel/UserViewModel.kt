@@ -1,19 +1,19 @@
 package com.tutorial.phellipesilva.architecturecomponentstesting.userViewModel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.*
 import com.tutorial.phellipesilva.architecturecomponentstesting.database.User
 import com.tutorial.phellipesilva.architecturecomponentstesting.repository.Repository
 import com.tutorial.phellipesilva.architecturecomponentstesting.repository.RepositoryOperationCallback
 
 class UserViewModel(private val repository: Repository) : ViewModel() {
 
-    private val userLiveData = MediatorLiveData<User>()
-    private var currentUser = repository.getUser(1)
+    private val userLiveData: LiveData<User>
+    private var currentUserId = MutableLiveData<String>()
 
     init {
-        userLiveData.addSource(currentUser) { this.userLiveData.value = it }
+        userLiveData = Transformations.switchMap(currentUserId) { userId ->
+            repository.getUser(Integer.parseInt(userId))
+        }
     }
 
     fun getUser(): LiveData<User> {
@@ -31,9 +31,7 @@ class UserViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun showStoredUserById(userId: String) {
-        userLiveData.removeSource(currentUser)
-        currentUser = repository.getUser(Integer.parseInt(userId))
-        userLiveData.addSource(currentUser) { userLiveData.value = it }
+        currentUserId.value = userId
     }
 
     fun updateCurrentUserPhone(phone: String) {

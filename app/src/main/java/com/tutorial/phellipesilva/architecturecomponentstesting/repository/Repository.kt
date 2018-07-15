@@ -9,15 +9,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-class Repository(private val remoteService: RemoteService, private val userDao: UserDao, private val executor: Executor) {
+class Repository(
+    private val remoteService: RemoteService,
+    private val userDao: UserDao,
+    private val executor: Executor
+) {
 
-    fun getUser(userId: Int): LiveData<User> {
-        return userDao.load(userId)
-    }
+    fun getUser(userId: Int): LiveData<User> = userDao.load(userId)
 
-    fun fetchAndStoreUser(userId: Int, callback: RepositoryOperationCallback): LiveData<User> {
+    fun fetchAndStoreUser(userId: Int, callback: RepositoryOperationCallback) {
         refreshUser(userId, callback)
-        return userDao.load(userId)
     }
 
     fun updateUser(user: User) {
